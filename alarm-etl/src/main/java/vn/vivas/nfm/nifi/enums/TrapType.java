@@ -1,0 +1,7 @@
+package vn.vivas.nfm.nifi.enums;
+
+public enum TrapType {
+    ERICSSON_ACTIVE_ALARM,
+    ERICSSON_ALERT_ALARM,
+    SBC_AP_SYS_MGMT_SA_STATUS_CHANGE
+}
