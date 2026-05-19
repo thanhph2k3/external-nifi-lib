@@ -1,6 +1,7 @@
 package vn.vivas.nfm.nifi.model.raw.ericsson;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import vn.vivas.nfm.nifi.enums.TrapType;
 import vn.vivas.nfm.nifi.model.Alarm;
 
 import java.util.Map;
@@ -57,8 +58,8 @@ public class EricssonRawAlertAlarm extends EricssonRawAlarm {
     }
 
     @Override
-    public Alarm build() {
-        return new Alarm();
+    public TrapType getTrapType() {
+        return TrapType.ERICSSON_ALERT_ALARM;
     }
 
     @Override

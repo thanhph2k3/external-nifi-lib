@@ -55,7 +55,5 @@ public abstract class RawAlarm {
 
     public abstract TrapType getTrapType();
 
-    public abstract Alarm build();
-
     protected abstract void parseAlarmFromRaw(Map<String, Object> rawObject);
 }

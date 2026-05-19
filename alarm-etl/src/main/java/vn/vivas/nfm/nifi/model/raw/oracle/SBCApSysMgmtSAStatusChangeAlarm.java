@@ -32,11 +32,6 @@ public class SBCApSysMgmtSAStatusChangeAlarm extends RawAlarm {
     }
 
     @Override
-    public Alarm build() {
-        return new Alarm();
-    }
-
-    @Override
     protected void parseAlarmFromRaw(Map<String, Object> rawObject) {
         if (rawObject == null) {
             return;

@@ -10,12 +10,7 @@ public class SBCApSyslogMessageGeneratedAlarm extends RawAlarm {
 
     @Override
     public TrapType getTrapType() {
-
-    }
-
-    @Override
-    public Alarm build() {
-        return new Alarm();
+        return TrapType.SBC_AP_SYSLOG_MESSAGE_GENERATED_ALARM;
     }
 
     @Override
