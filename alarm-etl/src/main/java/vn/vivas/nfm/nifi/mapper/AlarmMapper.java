@@ -8,4 +8,7 @@ public interface AlarmMapper<T extends RawAlarm> {
     TrapType getTrapType();
     Class<T> getRawAlarmClass();
     Alarm map(T alarm);
+    default  Alarm mapRaw(RawAlarm alarm) {
+        return map(getRawAlarmClass().cast(alarm));
+    }
 }
