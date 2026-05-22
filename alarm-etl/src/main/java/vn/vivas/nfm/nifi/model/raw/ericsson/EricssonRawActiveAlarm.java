@@ -1,8 +1,6 @@
 package vn.vivas.nfm.nifi.model.raw.ericsson;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import vn.vivas.nfm.nifi.enums.TrapType;
-import vn.vivas.nfm.nifi.model.Alarm;
 
 import java.util.Map;
 
@@ -45,8 +43,7 @@ public class EricssonRawActiveAlarm extends EricssonRawAlarm {
     @JsonProperty("eriAlarmActiveAdditionalInfo")
     private String eriAlarmActiveAdditionalInfo;
 
-    public EricssonRawActiveAlarm(TrapType trapType, Map<String, Object> rawObject) {
-        super(trapType);
+    public EricssonRawActiveAlarm(Map<String, Object> rawObject) {
         parseAlarmFromRaw(rawObject);
     }
 

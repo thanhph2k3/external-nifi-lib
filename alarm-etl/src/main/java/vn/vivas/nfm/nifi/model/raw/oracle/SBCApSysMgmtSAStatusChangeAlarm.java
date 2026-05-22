@@ -1,8 +1,6 @@
 package vn.vivas.nfm.nifi.model.raw.oracle;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import vn.vivas.nfm.nifi.enums.TrapType;
-import vn.vivas.nfm.nifi.model.Alarm;
 import vn.vivas.nfm.nifi.model.raw.RawAlarm;
 
 import java.util.Map;
@@ -26,8 +24,7 @@ public class SBCApSysMgmtSAStatusChangeAlarm extends RawAlarm {
     @JsonProperty("apSysMgmtSAStatusReason")
     private String apSysMgmtSAStatusReason;
 
-    public SBCApSysMgmtSAStatusChangeAlarm(TrapType trapType, Map<String, Object> rawObject) {
-        super(trapType);
+    public SBCApSysMgmtSAStatusChangeAlarm(Map<String, Object> rawObject) {
         parseAlarmFromRaw(rawObject);
     }
 

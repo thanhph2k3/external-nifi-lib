@@ -1,8 +1,6 @@
 package vn.vivas.nfm.nifi.model.raw;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import vn.vivas.nfm.nifi.enums.TrapType;
-import vn.vivas.nfm.nifi.model.Alarm;
 import vn.vivas.nfm.nifi.validator.SNMPValidator;
 
 import java.util.Map;
@@ -21,12 +19,6 @@ public abstract class RawAlarm {
 
     @JsonProperty("requestID")
     protected String requestID;
-
-    protected final TrapType trapType;
-
-    protected RawAlarm(TrapType trapType) {
-        this.trapType = trapType;
-    }
 
     protected String extractOID(String key) {
         if (!SNMPValidator.isValidSNMPTrapField(key)) {
@@ -60,8 +52,4 @@ public abstract class RawAlarm {
     }
 
     protected abstract void parseAlarmFromRaw(Map<String, Object> rawObject);
-
-    public TrapType getTrapType() {
-        return trapType;
-    }
 }
