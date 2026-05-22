@@ -8,9 +8,9 @@ import java.util.Map;
 
 public class SBCApSyslogMessageGeneratedAlarm extends RawAlarm {
 
-    @Override
-    public TrapType getTrapType() {
-        return TrapType.SBC_AP_SYSLOG_MESSAGE_GENERATED_ALARM;
+    public SBCApSyslogMessageGeneratedAlarm(TrapType trapType, Map<String, Object> rawObject) {
+        super(trapType);
+        parseAlarmFromRaw(rawObject);
     }
 
     @Override

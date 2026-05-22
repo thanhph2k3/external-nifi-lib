@@ -1,6 +1,7 @@
 package vn.vivas.nfm.nifi.model.raw.ericsson;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import vn.vivas.nfm.nifi.enums.TrapType;
 import vn.vivas.nfm.nifi.model.raw.RawAlarm;
 
 public abstract class EricssonRawAlarm extends RawAlarm {
@@ -33,6 +34,10 @@ public abstract class EricssonRawAlarm extends RawAlarm {
 
     @JsonProperty("eriAlarmNObjRecordType")
     protected String eriAlarmNObjRecordType;
+
+    protected EricssonRawAlarm(TrapType trapType) {
+        super(trapType);
+    }
 
     protected boolean parseEricssonCommonField(String oid, Object value) {
         String fieldValue = parseFieldValue(value);

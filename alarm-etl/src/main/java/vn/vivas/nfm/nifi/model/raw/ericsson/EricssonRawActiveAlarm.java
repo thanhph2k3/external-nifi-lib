@@ -45,13 +45,9 @@ public class EricssonRawActiveAlarm extends EricssonRawAlarm {
     @JsonProperty("eriAlarmActiveAdditionalInfo")
     private String eriAlarmActiveAdditionalInfo;
 
-    public EricssonRawActiveAlarm(Map<String, Object> rawObject) {
+    public EricssonRawActiveAlarm(TrapType trapType, Map<String, Object> rawObject) {
+        super(trapType);
         parseAlarmFromRaw(rawObject);
-    }
-
-    @Override
-    public TrapType getTrapType() {
-        return TrapType.ERICSSON_ACTIVE_ALARM;
     }
 
     @Override

@@ -26,9 +26,9 @@ public class SBCApSysMgmtSAStatusChangeAlarm extends RawAlarm {
     @JsonProperty("apSysMgmtSAStatusReason")
     private String apSysMgmtSAStatusReason;
 
-    @Override
-    public TrapType getTrapType() {
-        return TrapType.SBC_AP_SYS_MGMT_SA_STATUS_CHANGE;
+    public SBCApSysMgmtSAStatusChangeAlarm(TrapType trapType, Map<String, Object> rawObject) {
+        super(trapType);
+        parseAlarmFromRaw(rawObject);
     }
 
     @Override

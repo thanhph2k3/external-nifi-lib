@@ -39,9 +39,9 @@ public class RawAlarmFactory {
 
     private RawAlarm createByTrapType(TrapType trapType, Map<String, Object> rawObject) {
         return switch (trapType) {
-            case SBC_AP_SYS_MGMT_SA_STATUS_CHANGE ->  new SBCApSysMgmtSAStatusChangeAlarm();
-            case SBC_AP_SYSLOG_MESSAGE_GENERATED_ALARM ->   new SBCApSyslogMessageGeneratedAlarm();
-            case SBC_AP_SW_CFG_ACTIVATE_NOTIFICATION -> new SBCApSwCfgActivateNotificationAlarm();
+            case SBC_AP_SYS_MGMT_SA_STATUS_CHANGE ->  new SBCApSysMgmtSAStatusChangeAlarm(trapType, rawObject);
+            case SBC_AP_SYSLOG_MESSAGE_GENERATED_ALARM ->   new SBCApSyslogMessageGeneratedAlarm(trapType, rawObject);
+            case SBC_AP_SW_CFG_ACTIVATE_NOTIFICATION -> new SBCApSwCfgActivateNotificationAlarm(trapType, rawObject);
             default ->  throw new UnsupportedTrapException("Raw alarm type " + trapType + " is not supported");
         };
     }

@@ -22,6 +22,12 @@ public abstract class RawAlarm {
     @JsonProperty("requestID")
     protected String requestID;
 
+    protected final TrapType trapType;
+
+    protected RawAlarm(TrapType trapType) {
+        this.trapType = trapType;
+    }
+
     protected String extractOID(String key) {
         if (!SNMPValidator.isValidSNMPTrapField(key)) {
             return null;
@@ -53,7 +59,9 @@ public abstract class RawAlarm {
         return true;
     }
 
-    public abstract TrapType getTrapType();
-
     protected abstract void parseAlarmFromRaw(Map<String, Object> rawObject);
+
+    public TrapType getTrapType() {
+        return trapType;
+    }
 }

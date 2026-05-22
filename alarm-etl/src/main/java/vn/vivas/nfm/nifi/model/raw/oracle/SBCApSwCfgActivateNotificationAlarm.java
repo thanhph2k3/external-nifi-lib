@@ -6,9 +6,9 @@ import vn.vivas.nfm.nifi.model.raw.RawAlarm;
 import java.util.Map;
 
 public class SBCApSwCfgActivateNotificationAlarm extends RawAlarm {
-    @Override
-    public TrapType getTrapType() {
-        return TrapType.SBC_AP_SW_CFG_ACTIVATE_NOTIFICATION;
+    public SBCApSwCfgActivateNotificationAlarm(TrapType trapType, Map<String, Object> rawObject) {
+        super(trapType);
+        parseAlarmFromRaw(rawObject);
     }
 
     @Override
