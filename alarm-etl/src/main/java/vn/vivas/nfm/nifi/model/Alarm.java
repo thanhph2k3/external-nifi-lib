@@ -21,6 +21,9 @@ public class Alarm {
     @JsonProperty("specific_problem")
     private String specificProblem;
 
+    @JsonProperty("problem_text")
+    private String problemText;
+
     @JsonProperty("severity_level")
     private Integer severityLevel;
 
@@ -37,12 +40,12 @@ public class Alarm {
     private String details;
 
     @JsonProperty("type")
-    private String type;
+    private int type;
 
     // Alarm Network Data
 
     @JsonProperty("protocol")
-    private String protocol;
+    private int protocol;
 
     @JsonProperty("managed_object")
     private String managedObject;
@@ -150,8 +153,11 @@ public class Alarm {
 
     // Alarm Raw Data
 
-    @JsonProperty("raw_input")
-    private Object rawInput;
+    @JsonProperty("decode_data")
+    private String decodeData;
+
+    @JsonProperty("raw_data")
+    private Object rawData;
 
     @JsonProperty("ingest_time")
     private Long ingestTime;
@@ -189,6 +195,14 @@ public class Alarm {
 
     public void setSpecificProblem(String specificProblem) {
         this.specificProblem = specificProblem;
+    }
+
+    public String getProblemText() {
+        return problemText;
+    }
+
+    public void setProblemText(String problemText) {
+        this.problemText = problemText;
     }
 
     public Integer getSeverityLevel() {
@@ -231,19 +245,19 @@ public class Alarm {
         this.details = details;
     }
 
-    public String getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
 
-    public String getProtocol() {
+    public int getProtocol() {
         return protocol;
     }
 
-    public void setProtocol(String protocol) {
+    public void setProtocol(int protocol) {
         this.protocol = protocol;
     }
 
@@ -503,12 +517,20 @@ public class Alarm {
         this.deviceId = deviceId;
     }
 
-    public Object getRawInput() {
-        return rawInput;
+    public Object getRawData() {
+        return rawData;
     }
 
-    public void setRawInput(Object rawInput) {
-        this.rawInput = rawInput;
+    public void setRawData(Object rawData) {
+        this.rawData = rawData;
+    }
+
+    public String getDecodeData() {
+        return decodeData;
+    }
+
+    public void setDecodeData(String decodeData) {
+        this.decodeData = decodeData;
     }
 
     public Long getIngestTime() {

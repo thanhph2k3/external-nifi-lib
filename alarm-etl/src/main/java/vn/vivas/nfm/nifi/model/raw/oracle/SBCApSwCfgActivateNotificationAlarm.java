@@ -6,6 +6,7 @@ import java.util.Map;
 
 public class SBCApSwCfgActivateNotificationAlarm extends RawAlarm {
     public SBCApSwCfgActivateNotificationAlarm(Map<String, Object> rawObject) {
+        super(rawObject);
         parseAlarmFromRaw(rawObject);
     }
 

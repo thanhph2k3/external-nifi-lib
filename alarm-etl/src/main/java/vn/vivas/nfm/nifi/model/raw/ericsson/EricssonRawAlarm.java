@@ -3,6 +3,8 @@ package vn.vivas.nfm.nifi.model.raw.ericsson;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import vn.vivas.nfm.nifi.model.raw.RawAlarm;
 
+import java.util.Map;
+
 public abstract class EricssonRawAlarm extends RawAlarm {
 
     protected static final String OID_NOBJ_ADDITIONAL_TEXT = "1.3.6.1.4.1.193.183.4.1.2.1";
@@ -33,6 +35,10 @@ public abstract class EricssonRawAlarm extends RawAlarm {
 
     @JsonProperty("eriAlarmNObjRecordType")
     protected String eriAlarmNObjRecordType;
+
+    public EricssonRawAlarm(Map<String, Object> rawObject) {
+        super(rawObject);
+    }
 
     protected boolean parseEricssonCommonField(String oid, Object value) {
         String fieldValue = parseFieldValue(value);

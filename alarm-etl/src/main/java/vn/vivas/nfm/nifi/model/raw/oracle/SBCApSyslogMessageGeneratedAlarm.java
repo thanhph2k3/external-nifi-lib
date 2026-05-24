@@ -7,6 +7,7 @@ import java.util.Map;
 public class SBCApSyslogMessageGeneratedAlarm extends RawAlarm {
 
     public SBCApSyslogMessageGeneratedAlarm(Map<String, Object> rawObject) {
+        super(rawObject);
         parseAlarmFromRaw(rawObject);
     }
 

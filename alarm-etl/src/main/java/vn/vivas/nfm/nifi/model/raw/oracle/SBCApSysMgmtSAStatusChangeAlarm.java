@@ -7,10 +7,10 @@ import java.util.Map;
 
 public class SBCApSysMgmtSAStatusChangeAlarm extends RawAlarm {
 
-    private static final String OID_AP_SYS_MGMT_SA_HOSTNAME = "1.3.6.1.4.1.9148.3.2.5.16";
-    private static final String OID_AP_SYS_MGMT_SA_IP = "1.3.6.1.4.1.9148.3.2.5.17";
-    private static final String OID_AP_SYS_MGMT_SA_STATUS = "1.3.6.1.4.1.9148.3.2.5.18";
-    private static final String OID_AP_SYS_MGMT_SA_STATUS_REASON = "1.3.6.1.4.1.9148.3.2.5.19";
+    private static final String OID_AP_SYS_MGMT_SA_HOSTNAME = "1.3.6.1.4.1.9148.3.2.5.16.0";
+    private static final String OID_AP_SYS_MGMT_SA_IP = "1.3.6.1.4.1.9148.3.2.5.17.0";
+    private static final String OID_AP_SYS_MGMT_SA_STATUS = "1.3.6.1.4.1.9148.3.2.5.18.0";
+    private static final String OID_AP_SYS_MGMT_SA_STATUS_REASON = "1.3.6.1.4.1.9148.3.2.5.19.0";
 
     @JsonProperty("apSysMgmtSAHostname")
     private String apSysMgmtSAHostname;
@@ -25,6 +25,7 @@ public class SBCApSysMgmtSAStatusChangeAlarm extends RawAlarm {
     private String apSysMgmtSAStatusReason;
 
     public SBCApSysMgmtSAStatusChangeAlarm(Map<String, Object> rawObject) {
+        super(rawObject);
         parseAlarmFromRaw(rawObject);
     }
 
@@ -48,5 +49,29 @@ public class SBCApSysMgmtSAStatusChangeAlarm extends RawAlarm {
                 case OID_AP_SYS_MGMT_SA_STATUS_REASON -> this.apSysMgmtSAStatusReason = fieldValue;
             }
         });
+    }
+
+    @Override
+    public String toString() {
+        return "apSysMgmtSAHostname: " + apSysMgmtSAHostname + "\n"
+                + "apSysMgmtSAIP: " + apSysMgmtSAIP + "\n"
+                + "apSysMgmtSAStatus: " + apSysMgmtSAStatus + "\n"
+                + "apSysMgmtSAStatusReason: " + apSysMgmtSAStatusReason;
+    }
+
+    public String getApSysMgmtSAHostname() {
+        return apSysMgmtSAHostname;
+    }
+
+    public String getApSysMgmtSAIP() {
+        return apSysMgmtSAIP;
+    }
+
+    public String getApSysMgmtSAStatus() {
+        return apSysMgmtSAStatus;
+    }
+
+    public String getApSysMgmtSAStatusReason() {
+        return apSysMgmtSAStatusReason;
     }
 }

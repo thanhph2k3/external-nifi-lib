@@ -3,6 +3,7 @@ package vn.vivas.nfm.nifi.registry;
 import vn.vivas.nfm.nifi.exception.AmbiguousTrapException;
 import vn.vivas.nfm.nifi.exception.UnsupportedTrapException;
 import vn.vivas.nfm.nifi.handler.AlarmTrapHandler;
+import vn.vivas.nfm.nifi.handler.support.SnmpTrapSupport;
 import vn.vivas.nfm.nifi.model.Alarm;
 import vn.vivas.nfm.nifi.model.TrapID;
 import vn.vivas.nfm.nifi.model.raw.RawAlarm;
@@ -46,7 +47,9 @@ public class AlarmTrapHandlerRegistry {
                 .toList();
 
         if (matchedHandlers.isEmpty()) {
-            throw new UnsupportedTrapException("Raw alarm type " + rawObject.get("type") + " is not supported");
+            throw new UnsupportedTrapException(
+                    "Alarm trap " + SnmpTrapSupport.describeTrap(rawObject) + " is not supported"
+            );
         }
 
         if (matchedHandlers.size() > 1) {

@@ -1,6 +1,7 @@
 package vn.vivas.nfm.nifi.handler.oracle;
 
 import vn.vivas.nfm.nifi.handler.AlarmTrapHandler;
+import vn.vivas.nfm.nifi.handler.support.SnmpTrapSupport;
 import vn.vivas.nfm.nifi.mapper.oracle.SBCApSysMgmtSAStatusChangeAlarmMapper;
 import vn.vivas.nfm.nifi.model.Alarm;
 import vn.vivas.nfm.nifi.model.TrapID;
@@ -10,13 +11,7 @@ import java.util.Map;
 
 public class SBCApSysMgmtSAStatusChangeAlarmHandler implements AlarmTrapHandler<SBCApSysMgmtSAStatusChangeAlarm> {
 
-    public static final TrapID TRAP_ID = TrapID.of("oracle.sbc.apSysMgmtSAStatusChange");
-
-    private static final String LEGACY_NAME = "SBC_AP_SYS_MGMT_SA_STATUS_CHANGE";
-    private static final String OID_AP_SYS_MGMT_SA_HOSTNAME = "1.3.6.1.4.1.9148.3.2.5.16";
-    private static final String OID_AP_SYS_MGMT_SA_IP = "1.3.6.1.4.1.9148.3.2.5.17";
-    private static final String OID_AP_SYS_MGMT_SA_STATUS = "1.3.6.1.4.1.9148.3.2.5.18";
-    private static final String OID_AP_SYS_MGMT_SA_STATUS_REASON = "1.3.6.1.4.1.9148.3.2.5.19";
+    public static final TrapID TRAP_ID = TrapID.of("1.3.6.1.4.1.9148.3.2.6.0.15");
 
     private final SBCApSysMgmtSAStatusChangeAlarmMapper mapper;
 
@@ -40,7 +35,7 @@ public class SBCApSysMgmtSAStatusChangeAlarmHandler implements AlarmTrapHandler<
 
     @Override
     public boolean supports(Map<String, Object> rawObject) {
-        return false;
+        return SnmpTrapSupport.describeTrap(rawObject).equals(trapId().value());
     }
 
     @Override

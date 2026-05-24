@@ -52,6 +52,7 @@ public class EricssonRawAlertAlarm extends EricssonRawAlarm {
     protected String eriAlarmAlertAdditionalInfo;
 
     public EricssonRawAlertAlarm(Map<String, Object> rawObject) {
+        super(rawObject);
         parseAlarmFromRaw(rawObject);
     }
 
