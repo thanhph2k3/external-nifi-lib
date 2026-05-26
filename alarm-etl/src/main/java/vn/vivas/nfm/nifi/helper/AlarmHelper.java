@@ -1,8 +1,34 @@
 package vn.vivas.nfm.nifi.helper;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HexFormat;
+import java.util.List;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.util.UUID;
+
 public final class AlarmHelper {
 
+    private static final SimpleDateFormat DATE_FORMAT =
+            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     private AlarmHelper() {
+    }
+
+    public static String sha256(List<String> inputs) {
+        try {
+            String content = String.join("", inputs);
+
+            byte[] hash = MessageDigest
+                    .getInstance("SHA-256")
+                    .digest(content.getBytes(StandardCharsets.UTF_8));
+
+            return HexFormat.of().formatHex(hash);
+
+        } catch (Exception e) {
+            return UUID.randomUUID().toString() + "|" + inputs.toString();
+        }
     }
 
     public static String buildAlarmDescriptionHTML(
@@ -11,11 +37,10 @@ public final class AlarmHelper {
             String eventType,
             String specificProblem,
             String probableCause,
-            String eventTime,
-            String ceaseTime,
+            Date eventTime,
+            Date ceaseTime,
             String sourceIpAddress,
             String problemText,
-            String additionalText,
             String alarmType
     ) {
         StringBuilder htmlBuilder = new StringBuilder("<ol class=\"detail-list\">");
@@ -24,11 +49,10 @@ public final class AlarmHelper {
         appendDetailItem(htmlBuilder, "Event Type", eventType);
         appendDetailItem(htmlBuilder, "Specific Problem", specificProblem);
         appendDetailItem(htmlBuilder, "Probable Cause", probableCause);
-        appendDetailItem(htmlBuilder, "Event Time", eventTime);
-        appendDetailItem(htmlBuilder, "Cease Time", ceaseTime);
+        appendDetailItem(htmlBuilder, "Event Time", formatDate(eventTime));
+        appendDetailItem(htmlBuilder, "Cease Time", formatDate(ceaseTime));
         appendDetailItem(htmlBuilder, "Source IP Address", sourceIpAddress);
         appendDetailItem(htmlBuilder, "Problem Text", problemText);
-        appendDetailItem(htmlBuilder, "AdditionalText", additionalText);
         appendDetailItem(htmlBuilder, "Alarm Type", alarmType);
         return htmlBuilder.append("</ol>").toString();
     }
@@ -52,5 +76,9 @@ public final class AlarmHelper {
                 .replace(">", "&gt;")
                 .replace("\"", "&quot;")
                 .replace("'", "&#39;");
+    }
+
+    private static String formatDate(Date date) {
+        return date != null ? DATE_FORMAT.format(date) : null;
     }
 }

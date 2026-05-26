@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 public class AlarmTrapHandlerRegistry {
 
     private final List<AlarmTrapHandler<? extends RawAlarm>> handlers;
-    private final Map<TrapID, AlarmTrapHandler<? extends RawAlarm>> handlersById;
 
     public AlarmTrapHandlerRegistry(List<AlarmTrapHandler<? extends RawAlarm>> handlers) {
         if (handlers == null || handlers.isEmpty()) {
@@ -25,14 +24,6 @@ public class AlarmTrapHandlerRegistry {
         }
 
         this.handlers = List.copyOf(handlers);
-        this.handlersById = this.handlers.stream()
-                .collect(Collectors.toMap(
-                        AlarmTrapHandler::trapId,
-                        Function.identity(),
-                        (first, second) -> {
-                            throw new IllegalArgumentException("Duplicate handler for trap " + first.trapId());
-                        }
-                ));
     }
 
     public Alarm transform(Map<String, Object> rawObject) {
@@ -48,7 +39,7 @@ public class AlarmTrapHandlerRegistry {
 
         if (matchedHandlers.isEmpty()) {
             throw new UnsupportedTrapException(
-                    "Alarm trap " + SnmpTrapSupport.describeTrap(rawObject) + " is not supported"
+                    "Alarm trap " + SnmpTrapSupport.getTrapType(rawObject) + " is not supported"
             );
         }
 
@@ -60,13 +51,5 @@ public class AlarmTrapHandlerRegistry {
         }
 
         return matchedHandlers.getFirst();
-    }
-
-    public AlarmTrapHandler<? extends RawAlarm> getHandler(TrapID trapId) {
-        AlarmTrapHandler<? extends RawAlarm> handler = handlersById.get(trapId);
-        if (handler == null) {
-            throw new UnsupportedTrapException("Trap " + trapId + " is not supported");
-        }
-        return handler;
     }
 }

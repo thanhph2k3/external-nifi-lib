@@ -35,7 +35,7 @@ public class SBCApSysMgmtSAStatusChangeAlarmHandler implements AlarmTrapHandler<
 
     @Override
     public boolean supports(Map<String, Object> rawObject) {
-        return SnmpTrapSupport.describeTrap(rawObject).equals(trapId().value());
+        return SnmpTrapSupport.getTrapType(rawObject).equals(trapId().value());
     }
 
     @Override

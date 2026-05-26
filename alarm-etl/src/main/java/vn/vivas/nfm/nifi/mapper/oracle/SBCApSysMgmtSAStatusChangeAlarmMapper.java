@@ -5,6 +5,8 @@ import vn.vivas.nfm.nifi.mapper.AlarmMapper;
 import vn.vivas.nfm.nifi.model.*;
 import vn.vivas.nfm.nifi.model.raw.oracle.SBCApSysMgmtSAStatusChangeAlarm;
 
+import java.util.List;
+
 public class SBCApSysMgmtSAStatusChangeAlarmMapper implements AlarmMapper<SBCApSysMgmtSAStatusChangeAlarm> {
 
     @Override
@@ -17,57 +19,35 @@ public class SBCApSysMgmtSAStatusChangeAlarmMapper implements AlarmMapper<SBCApS
         Alarm standardizationAlarm = new Alarm();
 
         AlarmType alarmType = AlarmType.ALERT_ALARM;
-
         String alarmProbableCause = "apSysMgmtSAStatusChangeTrap";
-
         AlarmSeverity alarmSeverity = AlarmSeverity.MAJOR;
-
-        AlarmEventType alarmEventType = AlarmEventType.UNKNOWN;
-
-        AlarmProtocol alarmProtocol = AlarmProtocol.SNMP_PROTOCOL;
-
         String alarmProblemText = "Session Agent: " + alarm.getApSysMgmtSAHostname() + "/" + alarm.getApSysMgmtSAIP() + ", "
                                 + "change status to: " + getStatusDescription(Integer.parseInt(alarm.getApSysMgmtSAStatus())) + ", "
                                 + "due to: " + getReasonFromID(Integer.parseInt(alarm.getApSysMgmtSAStatusReason()));
-
         String alarmObject = alarm.getApSysMgmtSAHostname() + "/" + alarm.getApSysMgmtSAIP();
 
-        String alarmDetails = AlarmHelper.buildAlarmDescriptionHTML(
-                alarmObject,
-                alarmSeverity.toString(),
-                alarmEventType.toString(),
-                alarmProbableCause,
-                alarmProbableCause,
-                "",
-                "",
-                alarm.getApSysMgmtSAIP(),
-                alarmProblemText,
-                "",
-                alarmType.toString()
-        );
-
-        standardizationAlarm.setEventPoid(""); // -
-        standardizationAlarm.setProbableCauseId(0); // -
+        standardizationAlarm.setOrder(alarm.getRequestID());
+        standardizationAlarm.setEventPoid(AlarmHelper.sha256(List.of(
+                alarm.getSysUpTimeInstance(),
+                alarm.getSnmpTrapName()
+        )));
         standardizationAlarm.setProbableCause(alarmProbableCause);
-        standardizationAlarm.setSpecificProblem(""); // -
+        standardizationAlarm.setSpecificProblem(alarmProbableCause);
         standardizationAlarm.setProblemText(alarmProblemText);
+
         standardizationAlarm.setSeverityLevel(alarmSeverity.toInteger());
         standardizationAlarm.setSeverityLevelDesc(alarmSeverity.toString());
-        standardizationAlarm.setMinorType(""); // -
-        standardizationAlarm.setMajorType(alarm.getSnmpTrapName());
-        standardizationAlarm.setType(alarmType.toInteger());
-        standardizationAlarm.setDetails(alarmDetails);
 
-        standardizationAlarm.setProtocol(alarmProtocol.toInteger());
+        standardizationAlarm.setMajorType(alarm.getSnmpTrapName());
+
+        standardizationAlarm.setType(alarmType.toInteger());
+        standardizationAlarm.setTypeDesc(alarmType.toString());
+
         standardizationAlarm.setManagedObject(alarmObject);
         standardizationAlarm.setObject(alarmObject);
-        standardizationAlarm.setSubNetwork(""); // -
-        standardizationAlarm.setNetworkElement(""); // -
+        standardizationAlarm.setPeerAddress(alarm.getPeerAddress());
 
-        standardizationAlarm.setSystemEventId(alarmEventType.toInteger());
-        standardizationAlarm.setSystemEventName(alarmEventType.toString());
-
-        standardizationAlarm.setDecodeData(alarm.toString());
+        standardizationAlarm.buildAlarmDetails();
         standardizationAlarm.setRawData(alarm.getRawData());
 
         return standardizationAlarm;

@@ -1,6 +1,7 @@
 package vn.vivas.nfm.nifi.model.raw.ericsson;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import vn.vivas.nfm.nifi.handler.support.SnmpTrapSupport;
 
 import java.util.Map;
 
@@ -63,7 +64,7 @@ public class EricssonRawAlertAlarm extends EricssonRawAlarm {
         }
 
         rawObject.forEach((key, value) -> {
-            String oid = extractOID(key);
+            String oid = SnmpTrapSupport.extractOID(key);
             if (oid == null || this.parseEricssonCommonField(oid, value) || this.parseCommonField(oid, value)) {
                 return;
             }

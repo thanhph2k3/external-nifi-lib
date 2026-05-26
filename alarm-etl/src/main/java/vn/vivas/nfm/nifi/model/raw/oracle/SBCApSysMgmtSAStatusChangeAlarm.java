@@ -1,6 +1,7 @@
 package vn.vivas.nfm.nifi.model.raw.oracle;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import vn.vivas.nfm.nifi.handler.support.SnmpTrapSupport;
 import vn.vivas.nfm.nifi.model.raw.RawAlarm;
 
 import java.util.Map;
@@ -36,7 +37,7 @@ public class SBCApSysMgmtSAStatusChangeAlarm extends RawAlarm {
         }
 
         rawObject.forEach((key, value) -> {
-            String oid = extractOID(key);
+            String oid = SnmpTrapSupport.extractOID(key);
             if (oid == null || this.parseCommonField(oid, value)) {
                 return;
             }

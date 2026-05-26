@@ -2,18 +2,23 @@ package vn.vivas.nfm.nifi.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import vn.vivas.nfm.nifi.helper.AlarmHelper;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class Alarm {
 
     // Alarm Basic Data
 
+    @JsonProperty("order")
+    private String order;
+
     @JsonProperty("event_poid")
     private String eventPoid;
 
     @JsonProperty("probable_cause_id")
-    private Integer probableCauseId;
+    private int probableCauseId;
 
     @JsonProperty("probable_cause")
     private String probableCause;
@@ -25,7 +30,7 @@ public class Alarm {
     private String problemText;
 
     @JsonProperty("severity_level")
-    private Integer severityLevel;
+    private int severityLevel;
 
     @JsonProperty("severity_level_desc")
     private String severityLevelDesc;
@@ -41,6 +46,9 @@ public class Alarm {
 
     @JsonProperty("type")
     private int type;
+
+    @JsonProperty("type_desc")
+    private String typeDesc;
 
     // Alarm Network Data
 
@@ -58,6 +66,9 @@ public class Alarm {
 
     @JsonProperty("network_element")
     private String networkElement;
+
+    @JsonProperty("peer_address")
+    private String peerAddress;
 
     // Alarm Status Data
 
@@ -82,21 +93,21 @@ public class Alarm {
     private Long durationMs;
 
     @JsonProperty("status")
-    private Boolean status;
+    private int status;
 
     // Other Data
 
     @JsonProperty("custom_event_type")
-    private Integer customEventType;
+    private int customEventType;
 
     @JsonProperty("custom_event_id")
-    private Integer customEventId;
+    private int customEventId;
 
     @JsonProperty("custom_event_name")
     private String customEventName;
 
     @JsonProperty("system_event_id")
-    private Integer systemEventId;
+    private int systemEventId;
 
     @JsonProperty("system_event_name")
     private String systemEventName;
@@ -113,7 +124,7 @@ public class Alarm {
     private String deviceVendorCode;
 
     @JsonProperty("device_vendor_id")
-    private String deviceVendorId;
+    private int deviceVendorId;
 
     @JsonProperty("device_area_name")
     private String deviceAreaName;
@@ -122,7 +133,7 @@ public class Alarm {
     private String deviceAreaCode;
 
     @JsonProperty("device_area_id")
-    private String deviceAreaId;
+    private int deviceAreaId;
 
     @JsonProperty("device_sys_group_name")
     private String deviceSysGroupName;
@@ -131,7 +142,7 @@ public class Alarm {
     private String deviceSysGroupCode;
 
     @JsonProperty("device_sys_group_id")
-    private String deviceSysGroupId;
+    private int deviceSysGroupId;
 
     @JsonProperty("device_group_name")
     private String deviceGroupName;
@@ -140,7 +151,7 @@ public class Alarm {
     private String deviceGroupCode;
 
     @JsonProperty("device_group_id")
-    private String deviceGroupId;
+    private int deviceGroupId;
 
     @JsonProperty("device_name")
     private String deviceName;
@@ -149,20 +160,102 @@ public class Alarm {
     private String deviceCode;
 
     @JsonProperty("device_id")
-    private String deviceId;
+    private int deviceId;
 
     // Alarm Raw Data
 
-    @JsonProperty("decode_data")
-    private String decodeData;
-
     @JsonProperty("raw_data")
-    private Object rawData;
+    private String rawData;
 
     @JsonProperty("ingest_time")
-    private Long ingestTime;
+    private long ingestTime;
 
     public Alarm() {
+
+        this.eventPoid = UUID.randomUUID().toString();
+
+        this.probableCauseId = 0;
+        this.probableCause = "-";
+        this.specificProblem = "-";
+        this.problemText = "-";
+        this.details = "-";
+
+        AlarmSeverity alarmSeverity = AlarmSeverity.OTHER;
+        this.severityLevel = alarmSeverity.toInteger();
+        this.severityLevelDesc = alarmSeverity.toString();
+
+        this.majorType = "-";
+        this.minorType = "-";
+
+        AlarmType alarmType = AlarmType.ALERT_ALARM;
+        this.type = alarmType.toInteger();
+
+        AlarmProtocol alarmProtocol = AlarmProtocol.SNMP_PROTOCOL;
+        this.protocol = alarmProtocol.toInteger();
+
+        this.managedObject = "-";
+        this.object = "-";
+        this.subNetwork = "-";
+        this.networkElement = "-";
+        this.peerAddress = "127.0.0.1";
+
+        this.createdTime = new Date();
+        this.createdTimeMs = System.currentTimeMillis();
+
+        this.clearedTime = null;
+        this.clearedTimeMs = null;
+
+        this.duration = null;
+        this.durationMs = null;
+        this.status = 0;
+
+        this.customEventType = 0;
+        this.customEventId = 0;
+        this.customEventName = "-";
+
+        AlarmEventType alarmEventType = AlarmEventType.UNKNOWN;
+        this.systemEventId = alarmEventType.toInteger();
+        this.systemEventName = alarmEventType.toString();
+
+        this.note = "-";
+
+        // Set default metadata
+        this.deviceVendorId = 0;
+        this.deviceVendorCode = "-";
+        this.deviceVendorName = "-";
+
+        this.deviceAreaId = 0;
+        this.deviceAreaCode = "-";
+        this.deviceAreaName = "-";
+
+        this.deviceSysGroupId = 0;
+        this.deviceSysGroupCode = "-";
+        this.deviceSysGroupName = "-";
+
+        this.deviceGroupId = 0;
+        this.deviceGroupCode = "-";
+        this.deviceGroupName = "-";
+
+        this.deviceId = 0;
+        this.deviceCode = "-";
+        this.deviceName = "-";
+
+        this.ingestTime = System.currentTimeMillis();
+    }
+
+    public void buildAlarmDetails() {
+        this.details = AlarmHelper.buildAlarmDescriptionHTML(
+                this.managedObject,
+                this.severityLevelDesc,
+                this.systemEventName,
+                this.probableCause,
+                this.specificProblem,
+                this.createdTime,
+                this.clearedTime,
+                this.peerAddress,
+                this.problemText,
+                this.typeDesc
+        );
     }
 
     public String getEventPoid() {
@@ -173,11 +266,11 @@ public class Alarm {
         this.eventPoid = eventPoid;
     }
 
-    public Integer getProbableCauseId() {
+    public int getProbableCauseId() {
         return probableCauseId;
     }
 
-    public void setProbableCauseId(Integer probableCauseId) {
+    public void setProbableCauseId(int probableCauseId) {
         this.probableCauseId = probableCauseId;
     }
 
@@ -205,11 +298,11 @@ public class Alarm {
         this.problemText = problemText;
     }
 
-    public Integer getSeverityLevel() {
+    public int getSeverityLevel() {
         return severityLevel;
     }
 
-    public void setSeverityLevel(Integer severityLevel) {
+    public void setSeverityLevel(int severityLevel) {
         this.severityLevel = severityLevel;
     }
 
@@ -253,6 +346,14 @@ public class Alarm {
         this.type = type;
     }
 
+    public String getTypeDesc() {
+        return typeDesc;
+    }
+
+    public void setTypeDesc(String typeDesc) {
+        this.typeDesc = typeDesc;
+    }
+
     public int getProtocol() {
         return protocol;
     }
@@ -291,6 +392,14 @@ public class Alarm {
 
     public void setNetworkElement(String networkElement) {
         this.networkElement = networkElement;
+    }
+
+    public String getPeerAddress() {
+        return peerAddress;
+    }
+
+    public void setPeerAddress(String peerAddress) {
+        this.peerAddress = peerAddress;
     }
 
     public Date getCreatedTime() {
@@ -341,27 +450,27 @@ public class Alarm {
         this.durationMs = durationMs;
     }
 
-    public Boolean getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public Integer getCustomEventType() {
+    public int getCustomEventType() {
         return customEventType;
     }
 
-    public void setCustomEventType(Integer customEventType) {
+    public void setCustomEventType(int customEventType) {
         this.customEventType = customEventType;
     }
 
-    public Integer getCustomEventId() {
+    public int getCustomEventId() {
         return customEventId;
     }
 
-    public void setCustomEventId(Integer customEventId) {
+    public void setCustomEventId(int customEventId) {
         this.customEventId = customEventId;
     }
 
@@ -373,11 +482,11 @@ public class Alarm {
         this.customEventName = customEventName;
     }
 
-    public Integer getSystemEventId() {
+    public int getSystemEventId() {
         return systemEventId;
     }
 
-    public void setSystemEventId(Integer systemEventId) {
+    public void setSystemEventId(int systemEventId) {
         this.systemEventId = systemEventId;
     }
 
@@ -413,11 +522,11 @@ public class Alarm {
         this.deviceVendorCode = deviceVendorCode;
     }
 
-    public String getDeviceVendorId() {
+    public int getDeviceVendorId() {
         return deviceVendorId;
     }
 
-    public void setDeviceVendorId(String deviceVendorId) {
+    public void setDeviceVendorId(int deviceVendorId) {
         this.deviceVendorId = deviceVendorId;
     }
 
@@ -437,11 +546,11 @@ public class Alarm {
         this.deviceAreaCode = deviceAreaCode;
     }
 
-    public String getDeviceAreaId() {
+    public int getDeviceAreaId() {
         return deviceAreaId;
     }
 
-    public void setDeviceAreaId(String deviceAreaId) {
+    public void setDeviceAreaId(int deviceAreaId) {
         this.deviceAreaId = deviceAreaId;
     }
 
@@ -461,11 +570,11 @@ public class Alarm {
         this.deviceSysGroupCode = deviceSysGroupCode;
     }
 
-    public String getDeviceSysGroupId() {
+    public int getDeviceSysGroupId() {
         return deviceSysGroupId;
     }
 
-    public void setDeviceSysGroupId(String deviceSysGroupId) {
+    public void setDeviceSysGroupId(int deviceSysGroupId) {
         this.deviceSysGroupId = deviceSysGroupId;
     }
 
@@ -485,11 +594,11 @@ public class Alarm {
         this.deviceGroupCode = deviceGroupCode;
     }
 
-    public String getDeviceGroupId() {
+    public int getDeviceGroupId() {
         return deviceGroupId;
     }
 
-    public void setDeviceGroupId(String deviceGroupId) {
+    public void setDeviceGroupId(int deviceGroupId) {
         this.deviceGroupId = deviceGroupId;
     }
 
@@ -509,40 +618,27 @@ public class Alarm {
         this.deviceCode = deviceCode;
     }
 
-    public String getDeviceId() {
+    public int getDeviceId() {
         return deviceId;
     }
 
-    public void setDeviceId(String deviceId) {
+    public void setDeviceId(int deviceId) {
         this.deviceId = deviceId;
     }
 
-    public Object getRawData() {
+    public String getRawData() {
         return rawData;
     }
 
-    public void setRawData(Object rawData) {
+    public void setRawData(String rawData) {
         this.rawData = rawData;
     }
 
-    public String getDecodeData() {
-        return decodeData;
+    public String getOrder() {
+        return order;
     }
 
-    public void setDecodeData(String decodeData) {
-        this.decodeData = decodeData;
-    }
-
-    public Long getIngestTime() {
-        return ingestTime;
-    }
-
-    public void setIngestTime(Long ingestTime) {
-        this.ingestTime = ingestTime;
-    }
-
-    @Override
-    public String toString() {
-        return "Alarm";
+    public void setOrder(String order) {
+        this.order = order;
     }
 }
