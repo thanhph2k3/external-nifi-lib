@@ -53,10 +53,12 @@ public class SBCApSysMgmtSAStatusChangeAlarm extends RawAlarm {
 
     @Override
     public String toString() {
-        return "apSysMgmtSAHostname: " + apSysMgmtSAHostname + "\n"
-                + "apSysMgmtSAIP: " + apSysMgmtSAIP + "\n"
-                + "apSysMgmtSAStatus: " + apSysMgmtSAStatus + "\n"
-                + "apSysMgmtSAStatusReason: " + apSysMgmtSAStatusReason;
+        return "{"
+                + "apSysMgmtSAHostname='" + apSysMgmtSAHostname + '\''
+                + ", apSysMgmtSAIP='" + apSysMgmtSAIP + '\''
+                + ", apSysMgmtSAStatus='" + apSysMgmtSAStatus + '\''
+                + ", apSysMgmtSAStatusReason='" + apSysMgmtSAStatusReason + '\''
+                + '}';
     }
 
     public String getApSysMgmtSAHostname() {
