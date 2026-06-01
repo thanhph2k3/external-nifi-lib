@@ -1,9 +1,11 @@
-package vn.vivas.nfm.nifi.models;
+package vn.vivas.nfm.nifi.model;
+
+import vn.vivas.nfm.nifi.parser.JsonStringParser;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class AlarmSNMPTrap {
+public class SNMPTrap {
 
     public static final String OID_SNMP_TRAP_NAME = "1.3.6.1.6.3.1.1.4.1.0";
     public static final String OID_SYS_UP_TIME_INSTANCE = "1.3.6.1.2.1.1.3.0";
@@ -31,10 +33,14 @@ public class AlarmSNMPTrap {
         return peerAddress;
     }
 
+    public Map<String, Object> getOids() {
+        return oids;
+    }
+
     private String requestID;
     private Map<String, Object> oids;
 
-    public AlarmSNMPTrap(Map<String, Object> trapObject) {
+    public SNMPTrap(Map<String, Object> trapObject) {
         trapObject.forEach((key, value) -> {
             String[] parts = key.split("\\$");
             if (parts.length > 1 && parts[0].equals("snmp")) {
@@ -52,10 +58,14 @@ public class AlarmSNMPTrap {
     }
 
     private void putOID(String key, Object value) {
-        if (oids == null) oids = new HashMap<>(AlarmSNMPTrap.OIDS_SIZE);
-        if (oids.size() >= AlarmSNMPTrap.OIDS_SIZE) {
+        if (oids == null) oids = new HashMap<>(SNMPTrap.OIDS_SIZE);
+        if (oids.size() >= SNMPTrap.OIDS_SIZE) {
             throw new IllegalArgumentException("OID size exceeded!");
         }
         oids.put(key, value);
+    }
+
+    public String toJsonString() {
+        return JsonStringParser.toJsonString(this);
     }
 }

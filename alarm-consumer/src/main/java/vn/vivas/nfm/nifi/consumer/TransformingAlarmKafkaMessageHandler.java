@@ -1,14 +1,13 @@
 package vn.vivas.nfm.nifi.consumer;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import vn.vivas.nfm.nifi.consumer.config.KafkaConsumerConfig;
-import vn.vivas.nfm.nifi.models.AlarmSNMPTrap;
-import vn.vivas.nfm.nifi.parsers.JsonStringParser;
+import vn.vivas.nfm.nifi.model.SNMPTrap;
+import vn.vivas.nfm.nifi.parser.JsonStringParser;
 
 import java.util.Map;
 import java.util.Objects;
@@ -46,8 +45,8 @@ public class TransformingAlarmKafkaMessageHandler implements AlarmMessageHandler
 
         String alarmJsonString = record.value();
         Map<String, Object> alarm = JsonStringParser.parseObjectFromString(alarmJsonString);
-        AlarmSNMPTrap alarmSNMPTrap = new AlarmSNMPTrap(alarm);
-        System.out.println("Alarm SNMP Trap: " + alarmSNMPTrap);
+        SNMPTrap snmpTrap = new SNMPTrap(alarm);
+        System.out.println("Alarm SNMP Trap: " + snmpTrap.toJsonString());
         ProducerRecord<String, String> outputRecord = new ProducerRecord<>(
                 config.outputTopic(),
                 record.key(),
