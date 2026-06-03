@@ -5,10 +5,15 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import vn.vivas.nfm.nifi.cache.RedisCacheService;
 import vn.vivas.nfm.nifi.consumer.config.KafkaConsumerConfig;
-import vn.vivas.nfm.nifi.model.SNMPTrap;
+import vn.vivas.nfm.nifi.model.*;
 import vn.vivas.nfm.nifi.parser.JsonStringParser;
+import vn.vivas.nfm.nifi.service.AlarmDecodeService;
+import vn.vivas.nfm.nifi.service.AlarmRoutingService;
+import vn.vivas.nfm.nifi.service.AlarmStandardizeService;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
@@ -22,6 +27,10 @@ public class TransformingAlarmKafkaMessageHandler implements AlarmMessageHandler
     private final Producer<String, String> producer;
     private final KafkaConsumerConfig config;
 
+    private final AlarmRoutingService alarmRoutingService;
+    private final AlarmDecodeService alarmDecodeService;
+    private final AlarmStandardizeService alarmStandardizeService;
+
     public TransformingAlarmKafkaMessageHandler(KafkaConsumerConfig config) {
         this(new KafkaProducer<>(config.toProducerProperties()), config);
     }
@@ -32,10 +41,13 @@ public class TransformingAlarmKafkaMessageHandler implements AlarmMessageHandler
     ) {
         this.producer = Objects.requireNonNull(producer, "producer must not be null");
         this.config = Objects.requireNonNull(config, "config must not be null");
+        this.alarmRoutingService = new AlarmRoutingService(new RedisCacheService("10.167.59.25", 6379, "CzXLB3aZTPxp"));
+        this.alarmDecodeService = new AlarmDecodeService();
+        this.alarmStandardizeService = new AlarmStandardizeService();
     }
 
     @Override
-    public void handle(ConsumerRecord<String, String> record) throws ExecutionException, InterruptedException {
+    public void handle(ConsumerRecord<String, String> record) throws ExecutionException, InterruptedException, IOException {
         LOGGER.info(() -> "Transformed alarm message"
                 + " inputTopic=" + record.topic()
                 + " outputTopic=" + config.outputTopic()
@@ -43,14 +55,16 @@ public class TransformingAlarmKafkaMessageHandler implements AlarmMessageHandler
                 + " offset=" + record.offset()
                 + " key=" + record.key());
 
-        String alarmJsonString = record.value();
-        Map<String, Object> alarm = JsonStringParser.parseObjectFromString(alarmJsonString);
-        SNMPTrap snmpTrap = new SNMPTrap(alarm);
-        System.out.println("Alarm SNMP Trap: " + snmpTrap.toJsonString());
+        Map<String, Object> alarmSNMPTrap = JsonStringParser.parseObjectFromString(record.value());
+        AlarmSNMPTrap alarmSnmpTrap = new AlarmSNMPTrap(alarmSNMPTrap);
+        AlarmSNMPWithRouting alarmSNMPWithRouting = alarmRoutingService.route(alarmSnmpTrap);
+        DecodedAlarm decodedAlarm = alarmDecodeService.decode(alarmSNMPWithRouting);
+        DecodedAlarmWithRouting decodedAlarmWithRouting = new DecodedAlarmWithRouting(decodedAlarm, alarmSNMPWithRouting.alarmEnrichment());
+        StandardizedAlarm standardizedAlarm = alarmStandardizeService.standardize(decodedAlarmWithRouting);
         ProducerRecord<String, String> outputRecord = new ProducerRecord<>(
                 config.outputTopic(),
                 record.key(),
-                alarmJsonString
+                standardizedAlarm.toJsonString()
         );
         producer.send(outputRecord).get();
     }

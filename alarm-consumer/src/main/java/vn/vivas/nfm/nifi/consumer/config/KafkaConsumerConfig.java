@@ -11,8 +11,8 @@ import java.util.Properties;
 public class KafkaConsumerConfig {
 
     private static final String DEFAULT_BOOTSTRAP_SERVERS = "10.167.59.39:9092";
-    private static final String DEFAULT_TOPIC = "nfm.alarm.data.source";
-    private static final String DEFAULT_OUTPUT_TOPIC = "nfm.alarm.data.sink";
+    private static final String DEFAULT_TOPIC = "nfm.alarm.data.source.stp";
+    private static final String DEFAULT_OUTPUT_TOPIC = "nfm.alarm.data.sink.stp";
     private static final String DEFAULT_GROUP_ID = "alarm-consumer";
     private static final String DEFAULT_AUTO_OFFSET_RESET = "earliest";
     private static final int DEFAULT_MAX_POLL_RECORDS = 100;
