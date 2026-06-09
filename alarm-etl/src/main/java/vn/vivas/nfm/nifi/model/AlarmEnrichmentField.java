@@ -1,5 +1,8 @@
 package vn.vivas.nfm.nifi.model;
 
+import lombok.Getter;
+
+@Getter
 public class AlarmEnrichmentField {
     private final int id;
     private final String code;
@@ -9,18 +12,6 @@ public class AlarmEnrichmentField {
         this.id = id;
         this.code = code;
         this.name = name;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getName() {
-        return name;
     }
 
     @Override

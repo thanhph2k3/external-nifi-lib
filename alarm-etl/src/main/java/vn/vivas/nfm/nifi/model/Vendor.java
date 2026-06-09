@@ -1,16 +1,26 @@
 package vn.vivas.nfm.nifi.model;
 
+import lombok.Getter;
 import vn.vivas.nfm.nifi.model.cache.VendorRaw;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@Getter
 public class Vendor {
     private final int id;
     private final String code;
     private final String name;
     private final List<String> ipAddresses;
+
+    public static final String AARENET = "AARENET";
+    public static final String ERICSSON = "ERICSSON";
+    public static final String NOKIA = "NOKIA";
+    public static final String NFVI = "NFVI";
+    public static final String OCS = "OCS";
+    public static final String ORACLE = "ORACLE";
+    public static final String TEKELEC = "TEKELEC";
 
     public Vendor() {
         this.id = 0;
@@ -36,21 +46,5 @@ public class Vendor {
                   .map(String::trim)
                   .filter(s -> !s.isEmpty())
                   .toList();
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public List<String> getIpAddresses() {
-        return ipAddresses;
     }
 }

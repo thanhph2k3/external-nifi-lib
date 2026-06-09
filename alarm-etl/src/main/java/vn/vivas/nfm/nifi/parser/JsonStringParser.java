@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import vn.vivas.nfm.nifi.exception.ParseException;
 import vn.vivas.nfm.nifi.model.AlarmSNMPTrap;
-import vn.vivas.nfm.nifi.model.DecodedAlarm;
 
 import java.util.List;
 import java.util.Map;

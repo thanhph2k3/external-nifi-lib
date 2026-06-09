@@ -1,7 +1,9 @@
 package vn.vivas.nfm.nifi.model.alarm;
 
+import lombok.Getter;
 import vn.vivas.nfm.nifi.model.AlarmEnrichmentField;
 
+@Getter
 public class AlarmEnrichment {
     private final AlarmEnrichmentField device;
     private final AlarmEnrichmentField deviceGroup;
@@ -19,18 +21,4 @@ public class AlarmEnrichment {
         this.deviceSysGroup = deviceSysGroup;
         this.deviceVendor = deviceVendor;
     }
-
-    public AlarmEnrichmentField getDevice() {
-        return device;
-    }
-
-    public AlarmEnrichmentField getDeviceGroup() {
-        return deviceGroup;
-    }
-
-    public AlarmEnrichmentField getDeviceSysGroup() {
-        return deviceSysGroup;
-    }
-
-    public AlarmEnrichmentField getDeviceVendor() {return deviceVendor;}
 }

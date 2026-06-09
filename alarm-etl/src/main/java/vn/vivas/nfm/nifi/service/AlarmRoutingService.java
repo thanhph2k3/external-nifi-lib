@@ -46,7 +46,7 @@ public class AlarmRoutingService {
                 .orElse(new Vendor());
 
         switch (matchedVendor.getCode()) {
-            case "TEKELEC", "ORACLE", "NFVI" -> {
+            case Vendor.TEKELEC, Vendor.ORACLE, Vendor.NFVI -> {
                 Node matchedNode = nodes
                         .stream()
                         .filter(node -> IPHelper.matches(alarmSNMPTrap.getPeerAddress().split("/")[0], node.getIpAddress()))

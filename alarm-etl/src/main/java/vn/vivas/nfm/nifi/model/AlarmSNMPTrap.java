@@ -1,10 +1,12 @@
 package vn.vivas.nfm.nifi.model;
 
+import lombok.Getter;
 import vn.vivas.nfm.nifi.parser.JsonStringParser;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Getter
 public class AlarmSNMPTrap {
 
     public static final String OID_SNMP_TRAP_NAME = "1.3.6.1.6.3.1.1.4.1.0";
@@ -20,30 +22,6 @@ public class AlarmSNMPTrap {
     private long requestID;
     private long ingestTime;
     private Map<String, Object> oids;
-
-    public long getIngestTime() {
-        return ingestTime;
-    }
-
-    public long getRequestID() {
-        return requestID;
-    }
-
-    public String getTrapName() {
-        return trapName;
-    }
-
-    public String getSystemUpTime() {
-        return systemUpTime;
-    }
-
-    public String getPeerAddress() {
-        return peerAddress;
-    }
-
-    public Map<String, Object> getOids() {
-        return oids;
-    }
 
     public AlarmSNMPTrap(Map<String, Object> trapObject) {
         trapObject.forEach((key, value) -> {

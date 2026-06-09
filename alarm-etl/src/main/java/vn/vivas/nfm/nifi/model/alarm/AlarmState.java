@@ -1,5 +1,8 @@
 package vn.vivas.nfm.nifi.model.alarm;
 
+import lombok.Getter;
+
+@Getter
 public class AlarmState {
     private final int status;
     private final AlarmOperation operation;
@@ -7,13 +10,5 @@ public class AlarmState {
     public AlarmState(int status, AlarmOperation operation) {
         this.status = status;
         this.operation = operation;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public AlarmOperation getOperation() {
-        return operation;
     }
 }

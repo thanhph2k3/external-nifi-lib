@@ -1,5 +1,6 @@
 package vn.vivas.nfm.nifi.model.tekelec;
 
+import lombok.Getter;
 import vn.vivas.nfm.nifi.model.AlarmSNMPWithRouting;
 import vn.vivas.nfm.nifi.model.DecodedAlarm;
 import vn.vivas.nfm.nifi.model.alarm.AlarmMetadata;
@@ -8,6 +9,7 @@ import vn.vivas.nfm.nifi.parser.JsonStringParser;
 import java.util.HashMap;
 import java.util.Map;
 
+@Getter
 public class TekelecDecodedAlarm extends DecodedAlarm {
 
     public static final String OID_DATETIME_HEX = "1.3.6.1.4.1.323.5.3.3.1.1.1";
@@ -39,34 +41,6 @@ public class TekelecDecodedAlarm extends DecodedAlarm {
                 case OID_ALARM_SEQUENCE_NUMBER -> this.alarmSequenceNumber = Integer.parseInt(value.toString());
             }
         });
-    }
-
-    public String getDateTimeHex() {
-        return dateTimeHex;
-    }
-
-    public String getResourceName() {
-        return resourceName;
-    }
-
-    public String getSubResourceName() {
-        return subResourceName;
-    }
-
-    public int getSeverity() {
-        return severity;
-    }
-
-    public String getTextMessage() {
-        return textMessage;
-    }
-
-    public int getMRNNumber() {
-        return MRNNumber;
-    }
-
-    public int getAlarmSequenceNumber() {
-        return alarmSequenceNumber;
     }
 
     @Override
